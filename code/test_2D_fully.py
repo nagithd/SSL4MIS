@@ -54,6 +54,9 @@ def test_single_volume(case, net, test_save_path, FLAGS):
                 out_main, _, _, _ = net(input)
             else:
                 out_main = net(input)
+            # Select the first element of the tuple if output is not a Tensor
+            if isinstance(out_main, tuple):
+                out_main = out_main[0]
             out = torch.argmax(torch.softmax(
                 out_main, dim=1), dim=1).squeeze(0)
             out = out.cpu().detach().numpy()
